@@ -1,9 +1,9 @@
 package sample;
 
 import java.net.URL;
-import java.sql.Time;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -67,9 +67,9 @@ public class Controller {
         falseTimer();
 
         FormCeckBox1.setOnAction(event -> {
-            if (FormCeckBox1.isSelected()){
-              FormCeckBox2.setSelected(false);
-              FormCeckBox3.setSelected(false);
+            if (FormCeckBox1.isSelected()) {
+                FormCeckBox2.setSelected(false);
+                FormCeckBox3.setSelected(false);
             }
         });
 
@@ -77,8 +77,8 @@ public class Controller {
             if (FormCeckBox2.isSelected()) {
                 FormCeckBox1.setSelected(false);
                 FormCeckBox3.setSelected(false);
-                }
-            });
+            }
+        });
 
         FormCeckBox3.setOnAction(event -> {
             if (FormCeckBox3.isSelected()) {
@@ -88,47 +88,58 @@ public class Controller {
         });
 
         FormButtom.setOnAction(event -> {
-            if (FormCeckBox1.isSelected()){
+            if (FormCeckBox1.isSelected()) {
                 FormCeckBox1.setSelected(false);
-                GoTimer(FormLabel1,FormLabelInfo1);
-            }else if (FormCeckBox2.isSelected()) {
+                GoTimer(FormLabel1, FormLabelInfo1);
+            } else if (FormCeckBox2.isSelected()) {
                 FormCeckBox2.setSelected(false);
-                GoTimer(FormLabel2,FormLabelInfo2);
-            }else if (FormCeckBox3.isSelected()){
+                GoTimer(FormLabel2, FormLabelInfo2);
+            } else if (FormCeckBox3.isSelected()) {
                 FormCeckBox3.setSelected(false);
-                GoTimer(FormLabel3,FormLabelInfo3);
+                GoTimer(FormLabel3, FormLabelInfo3);
             }
         });
     }
 
-    public void GoTimer(Label labelTimer, Label labelInfo){
+    private void GoTimer(Label labelTimer, Label labelInfo) {
 
         labelInfo.setText(FormTextEditNotification.getText());
+        Thread TimerStart = new Timer(Integer.parseInt(FormTextEdit.getText()) * 60, labelTimer);
+        TimerStart.start();
     }
 
-    public void falseTimer(){
+    private void falseTimer() {
         FormLabel1.setText("00:00:00");
         FormLabel2.setText("00:00:00");
         FormLabel3.setText("00:00:00");
     }
+
+    public void RefreshTimer(Label TimerLab, String TimeStr){
+        TimerLab.setText(TimeStr);
+    }
 }
 
-class timerPotok implements Runnable{
+class Timer extends Thread{
 
     Integer TimeInt;
     Label LabelTimer;
 
-    public timerPotok(Integer Timer, Label LabelTimer){
+    public Timer(Integer Timer, Label LabelTimer){
         TimeInt = Timer;
         this.LabelTimer = LabelTimer;
     }
 
     @Override
     public void run() {
-        StrtTimer();
+        try {
+            StrtTimer();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void StrtTimer(){
+    private void StrtTimer() throws InterruptedException {
+
 
         while (TimeInt > 0) {
 
@@ -136,7 +147,9 @@ class timerPotok implements Runnable{
             Integer M = (TimeInt % 3600) / 60;
             Integer S = (TimeInt % 3600) % 60;
 
-            LabelTimer.setText(H.toString() + ":" + M.toString() + ":" + S.toString());
+            LabelTimer.setText(H + ":" + M + ":" + S);
+
+            //DefClass.RefreshTimer(LabelTimer,H + ":" + M + ":" + S);
 
             TimeInt = TimeInt - 1;
 
@@ -145,4 +158,5 @@ class timerPotok implements Runnable{
 
 
     }
+
 }
