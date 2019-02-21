@@ -1,4 +1,7 @@
+package sample;
+
 import java.net.URL;
+import java.sql.Time;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -99,6 +102,7 @@ public class Controller {
     }
 
     public void GoTimer(Label labelTimer, Label labelInfo){
+
         labelInfo.setText(FormTextEditNotification.getText());
     }
 
@@ -106,5 +110,39 @@ public class Controller {
         FormLabel1.setText("00:00:00");
         FormLabel2.setText("00:00:00");
         FormLabel3.setText("00:00:00");
+    }
+}
+
+class timerPotok implements Runnable{
+
+    Integer TimeInt;
+    Label LabelTimer;
+
+    public timerPotok(Integer Timer, Label LabelTimer){
+        TimeInt = Timer;
+        this.LabelTimer = LabelTimer;
+    }
+
+    @Override
+    public void run() {
+        StrtTimer();
+    }
+
+    private void StrtTimer(){
+
+        while (TimeInt > 0) {
+
+            Integer H = TimeInt / 3600;
+            Integer M = (TimeInt % 3600) / 60;
+            Integer S = (TimeInt % 3600) % 60;
+
+            LabelTimer.setText(H.toString() + ":" + M.toString() + ":" + S.toString());
+
+            TimeInt = TimeInt - 1;
+
+            Thread.sleep(1000);
+        }
+
+
     }
 }
