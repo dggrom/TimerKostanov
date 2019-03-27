@@ -1,7 +1,13 @@
 package sample;
 
+import java.awt.*;
+import java.awt.image.SampleModel;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,55 +17,57 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import javax.swing.*;
+
 public class Controller {
 
     @FXML
-    private ResourceBundle resources;
+    public ResourceBundle resources;
 
     @FXML
-    private URL location;
+    public URL location;
 
     @FXML
-    private AnchorPane Form;
+    public AnchorPane Form;
 
     @FXML
-    private GridPane FormGridPane;
+    public GridPane FormGridPane;
 
     @FXML
-    private Label FormLabel1;
+    public Label FormLabel1;
 
     @FXML
-    private Label FormLabelInfo1;
+    public Label FormLabelInfo1;
 
     @FXML
-    private Label FormLabel2;
+    public Label FormLabel2;
 
     @FXML
-    private Label FormLabelInfo2;
+    public Label FormLabelInfo2;
 
     @FXML
-    private Label FormLabel3;
+    public Label FormLabel3;
 
     @FXML
-    private Label FormLabelInfo3;
+    public Label FormLabelInfo3;
 
     @FXML
-    private CheckBox FormCeckBox1;
+    public CheckBox FormCeckBox1;
 
     @FXML
-    private CheckBox FormCeckBox2;
+    public CheckBox FormCeckBox2;
 
     @FXML
-    private CheckBox FormCeckBox3;
+    public CheckBox FormCeckBox3;
 
     @FXML
-    private TextField FormTextEdit;
+    public TextField FormTextEdit;
 
     @FXML
-    private Button FormButtom;
+    public Button FormButtom;
 
     @FXML
-    private TextField FormTextEditNotification;
+    public TextField FormTextEditNotification;
 
     @FXML
     void initialize() {
@@ -104,8 +112,12 @@ public class Controller {
     private void GoTimer(Label labelTimer, Label labelInfo) {
 
         labelInfo.setText(FormTextEditNotification.getText());
-        Thread TimerStart = new Timer(Integer.parseInt(FormTextEdit.getText()) * 60, labelTimer);
-        TimerStart.start();
+
+        Timer     TimerLab = new Timer();
+        TimerLabel TimerTaskLab =  new TimerLabel(Integer.parseInt(FormTextEdit.getText()) * 60, labelTimer);
+
+        TimerLab.schedule(TimerTaskLab,1);
+
     }
 
     private void falseTimer() {
@@ -119,18 +131,21 @@ public class Controller {
     }
 }
 
-class Timer extends Thread{
+class TimerLabel extends  TimerTask {
 
     Integer TimeInt;
     Label LabelTimer;
 
-    public Timer(Integer Timer, Label LabelTimer){
+
+    public TimerLabel(Integer Timer, Label LabelTimer){
         TimeInt = Timer;
         this.LabelTimer = LabelTimer;
     }
 
+
     @Override
     public void run() {
+
         try {
             StrtTimer();
         } catch (InterruptedException e) {
@@ -142,21 +157,21 @@ class Timer extends Thread{
 
 
         while (TimeInt > 0) {
+                Platform.runLater(() ->{
+                    Integer H = TimeInt / 3600;
+                    Integer M = (TimeInt % 3600) / 60;
+                    Integer S = (TimeInt % 3600) % 60;
 
-            Integer H = TimeInt / 3600;
-            Integer M = (TimeInt % 3600) / 60;
-            Integer S = (TimeInt % 3600) % 60;
+                    LabelTimer.setText(H + ":" + M + ":" + S);
 
-            LabelTimer.setText(H + ":" + M + ":" + S);
-
-            //DefClass.RefreshTimer(LabelTimer,H + ":" + M + ":" + S);
-
-            TimeInt = TimeInt - 1;
-
+                    TimeInt = TimeInt - 1;
+                });
             Thread.sleep(1000);
         }
 
+        Platform.runLater(()->{
 
+            JOptionPane.showMessageDialog(null, "lol","DontPlay",JOptionPane.ERROR_MESSAGE);
+        });
     }
-
 }
