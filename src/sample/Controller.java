@@ -114,7 +114,7 @@ public class Controller {
         labelInfo.setText(FormTextEditNotification.getText());
 
         Timer     TimerLab = new Timer();
-        TimerLabel TimerTaskLab =  new TimerLabel(Integer.parseInt(FormTextEdit.getText()) * 60, labelTimer);
+        TimerLabel TimerTaskLab =  new TimerLabel(Integer.parseInt(FormTextEdit.getText()) * 60, labelTimer, labelInfo);
 
         TimerLab.schedule(TimerTaskLab,1);
 
@@ -134,12 +134,13 @@ public class Controller {
 class TimerLabel extends  TimerTask {
 
     Integer TimeInt;
-    Label LabelTimer;
+    Label LabelTimer,LabelInfo;
 
 
-    public TimerLabel(Integer Timer, Label LabelTimer){
+    public TimerLabel(Integer Timer, Label LabelTimer, Label LabelInf){
         TimeInt = Timer;
         this.LabelTimer = LabelTimer;
+        LabelInfo = LabelInf;
     }
 
 
@@ -170,8 +171,8 @@ class TimerLabel extends  TimerTask {
         }
 
         Platform.runLater(()->{
-
-            JOptionPane.showMessageDialog(null, "lol","DontPlay",JOptionPane.ERROR_MESSAGE);
+            LabelTimer.setText("00:00:00");
+            JOptionPane.showMessageDialog(null, "Задача завершена",LabelInfo.getText(),JOptionPane.ERROR_MESSAGE);
         });
     }
 }
