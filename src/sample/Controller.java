@@ -8,6 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -95,18 +97,40 @@ public class Controller {
             }
         });
 
-        FormButtom.setOnAction(event -> {
-            if (FormCeckBox1.isSelected()) {
+        FormButtom.setOnAction(event -> { ActiveCheckbox();});
+    }
+
+
+
+    private void ActiveCheckbox(){
+
+        if (FormCeckBox1.isSelected()) {
+            if (FormLabel1.getText() == "00:00:00"){
                 FormCeckBox1.setSelected(false);
                 GoTimer(FormLabel1, FormLabelInfo1);
-            } else if (FormCeckBox2.isSelected()) {
+            }
+        } else if (FormCeckBox2.isSelected()) {
+            if (FormLabel2.getText() == "00:00:00") {
                 FormCeckBox2.setSelected(false);
                 GoTimer(FormLabel2, FormLabelInfo2);
-            } else if (FormCeckBox3.isSelected()) {
+            }
+        } else if (FormCeckBox3.isSelected()) {
+            if (FormLabel3.getText() == "00:00:00"){
                 FormCeckBox3.setSelected(false);
                 GoTimer(FormLabel3, FormLabelInfo3);
             }
-        });
+        } else {
+            JOptionPane.showMessageDialog(null, "Данный таймер уже видет отсчет","Error",JOptionPane.ERROR_MESSAGE);
+           /* int RestartBool = JOptionPane.showConfirmDialog(null,"Хотите обнулить его ?","Сброс таймера",JOptionPane.YES_NO_OPTION);
+
+            if (RestartBool == 0) {
+                if (FormCeckBox1.isSelected()) {FormLabel1.setText("00:00:00");}
+                if (FormCeckBox1.isSelected()) {FormLabel2.setText("00:00:00");}
+                if (FormCeckBox1.isSelected()) {FormLabel3.setText("00:00:00");}
+                ActiveCheckbox();
+            }
+            */
+        }
     }
 
     private void GoTimer(Label labelTimer, Label labelInfo) {
@@ -172,7 +196,7 @@ class TimerLabel extends  TimerTask {
 
         Platform.runLater(()->{
             LabelTimer.setText("00:00:00");
-            JOptionPane.showMessageDialog(null, "Задача завершена",LabelInfo.getText(),JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, LabelInfo.getText(),LabelInfo.getText(),JOptionPane.ERROR_MESSAGE);
         });
     }
 }
