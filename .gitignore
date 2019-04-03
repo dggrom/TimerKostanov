@@ -1,3 +1,7 @@
 .idea/
 TimerKostanov.iml
 out/
+.project
+.classpath
+.bin/
+.settings/
