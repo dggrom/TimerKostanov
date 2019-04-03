@@ -3,5 +3,5 @@ TimerKostanov.iml
 out/
 .project
 .classpath
-.bin/
+bin/
 .settings/
